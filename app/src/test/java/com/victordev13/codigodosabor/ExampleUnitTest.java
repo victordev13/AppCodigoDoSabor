@@ -1,4 +1,4 @@
-package com.victordev13.cdigodosabor;
+package com.victordev13.codigodosabor;
 
 import org.junit.Test;
 
