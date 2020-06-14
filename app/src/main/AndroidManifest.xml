@@ -9,8 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.victordev13.codigodosabor.Cadastro"></activity>
-        <activity android:name="com.victordev13.codigodosabor.Login" />
+        <activity android:name=".CriarPedido"></activity>
+        <activity android:name=".MeusDados" />
+        <activity android:name=".Pedidos" />
+        <activity android:name=".Cardapio" />
+        <activity android:name=".Cadastro" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
