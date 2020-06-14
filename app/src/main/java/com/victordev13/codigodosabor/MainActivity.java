@@ -2,6 +2,7 @@ package com.victordev13.codigodosabor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -13,9 +14,9 @@ import com.victordev13.codigodosabor.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button cardapio;
-    Button pedidos;
-    Button user_data;
+    Button btCardapio;
+    Button btPedidos;
+    Button btDados;
     Boolean usuarioLogado = false;
 
     private SQLiteDatabase db;
@@ -24,6 +25,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        btCardapio = findViewById(R.id.btCardapio);
+        btPedidos = findViewById(R.id.btPedidos);
+        btDados = findViewById(R.id.btDados);
 
         try {
             //db = openOrCreateDatabase("codigoDoSabor", MODE_PRIVATE, null);
@@ -38,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        if(usuarioLogado == false){
+        if(usuarioLogado == true){
             Intent intent = new Intent(this, Login.class);
             startActivity(intent);
         };
