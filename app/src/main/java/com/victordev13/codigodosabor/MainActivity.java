@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.victordev13.codigodosabor.R;
@@ -14,9 +15,9 @@ import com.victordev13.codigodosabor.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btCardapio;
-    Button btPedidos;
-    Button btDados;
+    ImageView btCardapio;
+    ImageView btPedidos;
+    ImageView btDados;
     Boolean usuarioLogado = false;
 
     private SQLiteDatabase db;
