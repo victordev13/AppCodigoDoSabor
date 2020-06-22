@@ -60,18 +60,20 @@ public class Cadastro extends AppCompatActivity {
         });
     }
 
-
     public boolean insertDB(String nome, String email, String senha, String endereco, String bairro){
-        /*
+
         try {
            db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE, null);
            //inserir dados no banco
-           db.execSQL("");
+           db.execSQL("INSERT INTO clientes " +
+                   "(nome, email, senha, endereco, bairro) " +
+                   "VALUES ('"+ nome +"', '"+ email +"', '"+ senha +"', '"+ endereco +"', '"+ bairro +"');");
+
             return true;
         } catch (Exception e){
             e.printStackTrace();
         }
-        */
+
         return true;
 }
 
@@ -80,8 +82,15 @@ public class Cadastro extends AppCompatActivity {
             //criando o banco de dados
             db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE, null);
 
-            //criar tabela de usuario
-            db.execSQL("");
+            //criar tabela de clientes
+            db.execSQL("CREATE TABLE IF NOT EXISTS clientes (\n" +
+                    "    id_clientes INTEGER PRIMARY KEY NOT NULL,\n" +
+                    "    nome VARCHAR(50) NOT NULL,\n" +
+                    "    email VARCHAR(50) UNIQUE NOT NULL,\n" +
+                    "    senha VARCHAR(50) NOT NULL,\n" +
+                    "    endereco VARCHAR(45),\n" +
+                    "    bairro VARCHAR(45)\n);"
+            );
 
         } catch (Exception e){
             e.printStackTrace();

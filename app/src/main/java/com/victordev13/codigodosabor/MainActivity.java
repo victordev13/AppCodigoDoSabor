@@ -3,10 +3,12 @@ package com.victordev13.codigodosabor;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         createTables();
 
         //se o usuário não estiver logado a activity Login é iniciada
+        verificaCadastrado();
         if(!verificaCadastrado()){
             Intent intentLogin = new Intent(this, Cadastro.class);
             startActivity(intentLogin);
@@ -72,10 +75,28 @@ public class MainActivity extends AppCompatActivity {
             //criando o banco de dados
             db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE, null);
 
-            //criar tabela de cardapio
+            //criar tabela de
+            db.execSQL("CREATE TABLE IF NOT EXISTS itens (\n" +
+                    "id_itens INT PRIMARY KEY NOT NULL ,\n" +
+                    "    nome VARCHAR(45) NOT NULL,\n" +
+                    "    descricao VARCHAR(45) NOT NULL,\n" +
+                    "    valor DECIMAL(2) NOT NULL,\n" +
+                    "    quantidade INT(3) NOT NULL)"
+            );
             //criar tabela de pedidos
-            db.execSQL("");
-
+            db.execSQL("CREATE TABLE IF NOT EXISTS pedidos (\n" +
+                    "    id_pedido INT PRIMARY KEY NOT NULL,\n" +
+                    "    fk_cliente INT,\n" +
+                    "    registro DATETIME NOT NULL,\n" +
+                    "    FOREIGN KEY (fk_cliente) REFERENCES clientes (id_clientes))"
+            );
+                db.execSQL("CREATE TABLE IF NOT EXISTS itens_pedidos (\n" +
+                    "\titens_id_itens INT NOT NULL,\n" +
+                    "    pedidos_id_pedidos INT NOT NULL,\n" +
+                    "    \n" +
+                    "    FOREIGN KEY (itens_id_itens) REFERENCES itens (id_itens),\n" +
+                    "    FOREIGN KEY (pedidos_id_pedidos) REFERENCES pedidos (id_pedido))"
+            );
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -83,6 +104,20 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean verificaCadastrado(){
         //verificar se existe registro no banco
+        try {
+            //criando o banco de dados
+            db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE,null);
+
+            Cursor cursor = db.rawQuery("SELECT * FROM clientes", null);
+            if(cursor.getCount() > 0){
+                return true;
+            }else{
+                return false;
+            }
+
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         return false;
     }
 
