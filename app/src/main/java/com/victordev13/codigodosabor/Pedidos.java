@@ -6,9 +6,12 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,8 +34,6 @@ public class Pedidos extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pedidos);
 
-        getPedidos();
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Meus Pedidos");
         setSupportActionBar(toolbar);
@@ -44,7 +45,9 @@ public class Pedidos extends AppCompatActivity {
             }
         });
 
-        listaPedidos = findViewById(R.id.listaId);
+        inserePedido();
+        getPedidos();
+
         btnAdicionarPedido = findViewById(R.id.btnAdicionarPedido);
 
         btnAdicionarPedido.setOnClickListener(new View.OnClickListener() {
@@ -55,41 +58,53 @@ public class Pedidos extends AppCompatActivity {
             }
         });
 
-        getPedidos();
-
     }
 
 
     private void getPedidos(){
         try {
-            //Listar as informações contidas no banco de dados, utilizando a interface Cursor
-            //rawQuery() executa o comando SELECT no banco de dados.
-            Cursor cursor = db.rawQuery("SELECT * FROM  pedidos ORDER BY id DESC", null);
+            db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE,null);
+            Cursor cursor = db.rawQuery("SELECT id_pedido FROM  pedidos ORDER BY id_pedido DESC;", null);
+            listaPedidos = findViewById(R.id.listaId);
+            int indiceTarefaId = cursor.getColumnIndex("id_pedido");
 
-            //Recuperar indices das colunas para ser utilizado depois
-            int indicePedido = cursor.getColumnIndex("id_pedido");
-
-            //Criar a lista
             itens = new ArrayList<String>();
 
-            //Criar o adaptador
-            itensAdaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, itens);
+            Toast.makeText(this, "Linhas: " + cursor.getCount(),Toast.LENGTH_LONG);
+            if(cursor.getCount() != 0){
+                while (cursor != null){
+                    Log.i("Resultado - ","NumeroPedido: " + cursor.getString(indiceTarefaId));
+                    itens.add("Pedido n° "+cursor.getString(indiceTarefaId)+" - R$"+"00,00");
+                    cursor.moveToNext();
+                }
+
+            }else{
+                Log.i("Resultado", "Nenhum dado encontrado");
+            }
+            itens.add("Pedido n° 1 - R$00,00");
+            itensAdaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, itens);
             listaPedidos.setAdapter(itensAdaptador);
 
-            //movendo o cursor para o 1° registro
-            cursor.moveToFirst();
-
-            while (cursor != null){
-
-                //Adicionar elementos na lista
-                itens.add(cursor.getString(indicePedido));
-
-                //Mover cursor para o próximo item
-                cursor.moveToNext();
-            }
         } catch (Exception e){
             e.getStackTrace();
+            Log.i("Erro Adapter", e.getMessage());
         }
+    }
+
+    private void inserePedido(){
+        try{
+            db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE,null);
+            String sql = "INSERT INTO pedidos (fk_cliente, fk_item, quantidade) VALUES(1,1,1);";
+
+            db.execSQL(sql);
+
+            Toast.makeText(getApplicationContext(), "Pedido Inserido", Toast.LENGTH_LONG).show();
+            getPedidos();
+        } catch (Exception e){
+            Log.i("Erro", e.getMessage());
+        }
+
+
     }
 
 }

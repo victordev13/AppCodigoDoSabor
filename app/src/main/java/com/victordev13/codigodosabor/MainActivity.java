@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -33,14 +34,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intentLogin);
             finish();
         };
-
-        try {
-            //db = openOrCreateDatabase("codigoDoSabor", MODE_PRIVATE, null);
-            //criacao da tabela principal
-            //db.execSQL("");
-        } catch(Exception e){
-            e.printStackTrace();
-        }
 
         btCardapio = findViewById(R.id.btCardapio);
         btPedidos = findViewById(R.id.btPedidos);
@@ -72,40 +65,35 @@ public class MainActivity extends AppCompatActivity {
 
     public void createTables(){
         try {
-            //criando o banco de dados
             db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE, null);
 
-            //criar tabela de
+            db.execSQL("CREATE TABLE IF NOT EXISTS pedidos (" +
+                    "    id_pedido INT PRIMARY KEY AUTOINCREMENT," +
+                    "    fk_cliente INT," +
+                    "    fk_item INT," +
+                    "    quantidade INT," +
+                    "    registro DATETIME NOT NULL,\n" +
+                    "    FOREIGN KEY (fk_cliente) REFERENCES clientes (id_clientes)," +
+                    "    FOREIGN KEY (fk_item) REFERENCES itens (id_item))"
+            );
+            Log.i("tabela criada:", "pedidos");
+
             db.execSQL("CREATE TABLE IF NOT EXISTS itens (\n" +
-                    "id_itens INT PRIMARY KEY NOT NULL ,\n" +
+                    "   id_item INT PRIMARY KEY AUTOINCREMENT,\n" +
                     "    nome VARCHAR(45) NOT NULL,\n" +
-                    "    descricao VARCHAR(45) NOT NULL,\n" +
                     "    valor DECIMAL(2) NOT NULL,\n" +
                     "    quantidade INT(3) NOT NULL)"
             );
-            //criar tabela de pedidos
-            db.execSQL("CREATE TABLE IF NOT EXISTS pedidos (\n" +
-                    "    id_pedido INT PRIMARY KEY NOT NULL,\n" +
-                    "    fk_cliente INT,\n" +
-                    "    registro DATETIME NOT NULL,\n" +
-                    "    FOREIGN KEY (fk_cliente) REFERENCES clientes (id_clientes))"
-            );
-                db.execSQL("CREATE TABLE IF NOT EXISTS itens_pedidos (\n" +
-                    "\titens_id_itens INT NOT NULL,\n" +
-                    "    pedidos_id_pedidos INT NOT NULL,\n" +
-                    "    \n" +
-                    "    FOREIGN KEY (itens_id_itens) REFERENCES itens (id_itens),\n" +
-                    "    FOREIGN KEY (pedidos_id_pedidos) REFERENCES pedidos (id_pedido))"
-            );
+            Log.i("Tabela criada:", "itens");
+
         } catch (Exception e){
             e.printStackTrace();
         }
     }
 
+
     public boolean verificaCadastrado(){
-        //verificar se existe registro no banco
         try {
-            //criando o banco de dados
             db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE,null);
 
             Cursor cursor = db.rawQuery("SELECT * FROM clientes", null);
@@ -120,7 +108,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
-    //fim funções usuário
-
 }
