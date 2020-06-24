@@ -8,23 +8,23 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static android.R.*;
+
 public class Cardapio extends AppCompatActivity {
 
-    EditText textoTarefa;
-    Button btnAdicionar;
     ListView listaItens;
 
     ArrayAdapter<String> itensAdaptador;
     ArrayList<String> itens;
-    ArrayList<Integer> ids;
+    ArrayList<String> valores;
 
     private SQLiteDatabase db;
     @Override
@@ -50,24 +50,40 @@ public class Cardapio extends AppCompatActivity {
     private void getCardapio(){
         try {
             db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE,null);
-            Cursor cursor = db.rawQuery("SELECT id_item FROM itens ORDER BY id_item DESC;", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM itens ORDER BY id_item DESC;", null);
             listaItens = findViewById(R.id.listaId);
             int indiceItem = cursor.getColumnIndex("nome");
+            int valorItem = cursor.getColumnIndex("valor");
 
             itens = new ArrayList<String>();
-
+            valores = new ArrayList<String>();
+            cursor.moveToFirst();
             if(cursor.getCount() != 0){
-                while (cursor.moveToNext()){
-                    Log.i("Resultado - ","NumeroPedido: " + cursor.getString(indiceItem));
+                for(int i = 0; i < cursor.getCount(); i++){
+                    Log.i("Resultado - ","Prato: " + cursor.getString(indiceItem));
                     itens.add(cursor.getString(indiceItem));
+                    valores.add("R$"+cursor.getString(valorItem));
+                    cursor.moveToNext();
                 }
-
             }else{
                 createItensCardapio();
                 Log.i("Resultado", "Nenhum dado encontrado");
             }
-            itens.add("Prato 1");
-            itensAdaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, itens);
+
+            //itensAdaptador = new ArrayAdapter<String>(getApplicationContext(), layout.simple_list_item_2, android.R.id.text1, itens);
+            itensAdaptador = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, itens) {
+                @Override
+                public View getView(int position, View convertView, ViewGroup parent) {
+                    View view = super.getView(position, convertView, parent);
+                    TextView textoDeCima = (TextView) view.findViewById(android.R.id.text1);
+                    TextView textoDeBaixo = (TextView) view.findViewById(android.R.id.text2);
+
+                    textoDeCima.setText(itens.get(position).toString());
+                    textoDeBaixo.setText(valores.get(position).toString());
+                    return view;
+                }
+            };
+
             listaItens.setAdapter(itensAdaptador);
 
         } catch (Exception e){

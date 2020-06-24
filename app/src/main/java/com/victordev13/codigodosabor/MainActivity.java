@@ -67,8 +67,16 @@ public class MainActivity extends AppCompatActivity {
         try {
             db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE, null);
 
+            db.execSQL("CREATE TABLE IF NOT EXISTS itens (\n" +
+                    "   id_item INT PRIMARY KEY,\n" +
+                    "    nome VARCHAR(45) NOT NULL,\n" +
+                    "    valor DECIMAL(2) NOT NULL,\n" +
+                    "    quantidade INT(3) NOT NULL)"
+            );
+            Log.i("Tabela criada:", "itens");
+
             db.execSQL("CREATE TABLE IF NOT EXISTS pedidos (" +
-                    "    id_pedido INT PRIMARY KEY AUTOINCREMENT," +
+                    "    id_pedido INT PRIMARY KEY," +
                     "    fk_cliente INT," +
                     "    fk_item INT," +
                     "    quantidade INT," +
@@ -78,15 +86,9 @@ public class MainActivity extends AppCompatActivity {
             );
             Log.i("tabela criada:", "pedidos");
 
-            db.execSQL("CREATE TABLE IF NOT EXISTS itens (\n" +
-                    "   id_item INT PRIMARY KEY AUTOINCREMENT,\n" +
-                    "    nome VARCHAR(45) NOT NULL,\n" +
-                    "    valor DECIMAL(2) NOT NULL,\n" +
-                    "    quantidade INT(3) NOT NULL)"
-            );
-            Log.i("Tabela criada:", "itens");
 
         } catch (Exception e){
+            Log.i("Erro", "tabelas não criadas");
             e.printStackTrace();
         }
     }
