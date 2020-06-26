@@ -50,7 +50,7 @@ public class Cardapio extends AppCompatActivity {
     private void getCardapio(){
         try {
             db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE,null);
-            Cursor cursor = db.rawQuery("SELECT * FROM itens ORDER BY id_item DESC;", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM itens ORDER BY id DESC;", null);
             listaItens = findViewById(R.id.listaId);
             int indiceItem = cursor.getColumnIndex("nome");
             int valorItem = cursor.getColumnIndex("valor");
@@ -70,7 +70,6 @@ public class Cardapio extends AppCompatActivity {
                 Log.i("Resultado", "Nenhum dado encontrado");
             }
 
-            //itensAdaptador = new ArrayAdapter<String>(getApplicationContext(), layout.simple_list_item_2, android.R.id.text1, itens);
             itensAdaptador = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_2, android.R.id.text1, itens) {
                 @Override
                 public View getView(int position, View convertView, ViewGroup parent) {
@@ -92,15 +91,16 @@ public class Cardapio extends AppCompatActivity {
         }
     }
 
-
     private void createItensCardapio(){
         try {
-            db.execSQL("INSERT INTO itens(nome, valor, quantidade) VALUES('Prato Feito', '20.00', '10')");
-            db.execSQL("INSERT INTO itens(nome, valor, quantidade) VALUES('Porção de Camarão', '35.00', '10')");
-            db.execSQL("INSERT INTO itens(nome, valor, quantidade) VALUES('Churrasco', '40.00', '10')");
-            db.execSQL("INSERT INTO itens(nome, valor, quantidade) VALUES('Lagosta', '70.00', '10')");
+            db.execSQL("INSERT INTO itens(nome, valor) VALUES('Prato Feito', '20.00')");
+            db.execSQL("INSERT INTO itens(nome, valor) VALUES('Porção de Camarão', '35.00')");
+            db.execSQL("INSERT INTO itens(nome, valor) VALUES('Churrasco', '40.00')");
+            db.execSQL("INSERT INTO itens(nome, valor) VALUES('Lagosta', '70.00')");
+            db.execSQL("INSERT INTO itens(nome, valor) VALUES('Frango Assado', '50.00')");
 
             Log.i("itens adicionados", "tabela itens");
+            getCardapio();
 
         } catch (Exception e){
             Log.i("Erro ao adicionar", "true");

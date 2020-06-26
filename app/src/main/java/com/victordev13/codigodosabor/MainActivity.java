@@ -68,31 +68,27 @@ public class MainActivity extends AppCompatActivity {
             db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE, null);
 
             db.execSQL("CREATE TABLE IF NOT EXISTS itens (\n" +
-                    "   id_item INT PRIMARY KEY,\n" +
+                    "   id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                     "    nome VARCHAR(45) NOT NULL,\n" +
-                    "    valor DECIMAL(2) NOT NULL,\n" +
-                    "    quantidade INT(3) NOT NULL)"
+                    "    valor DECIMAL(2) NOT NULL)"
             );
             Log.i("Tabela criada:", "itens");
 
             db.execSQL("CREATE TABLE IF NOT EXISTS pedidos (" +
-                    "    id_pedido INT PRIMARY KEY," +
-                    "    fk_cliente INT," +
+                    "    id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     "    fk_item INT," +
                     "    quantidade INT," +
-                    "    registro DATETIME NOT NULL,\n" +
-                    "    FOREIGN KEY (fk_cliente) REFERENCES clientes (id_clientes)," +
+                    "    valor DOUBLE,  " +
+                    "    registro DATETIME DEFAULT CURRENT_TIMESTAMP,\n" +
                     "    FOREIGN KEY (fk_item) REFERENCES itens (id_item))"
             );
-            Log.i("tabela criada:", "pedidos");
-
+            Log.i("Tabela criada:", "pedidos");
 
         } catch (Exception e){
             Log.i("Erro", "tabelas não criadas");
             e.printStackTrace();
         }
     }
-
 
     public boolean verificaCadastrado(){
         try {

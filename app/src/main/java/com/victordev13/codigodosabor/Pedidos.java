@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
@@ -45,7 +44,6 @@ public class Pedidos extends AppCompatActivity {
             }
         });
 
-        inserePedido();
         getPedidos();
 
         btnAdicionarPedido = findViewById(R.id.btnAdicionarPedido);
@@ -60,51 +58,43 @@ public class Pedidos extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getPedidos();
+    }
 
     private void getPedidos(){
         try {
             db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE,null);
-            Cursor cursor = db.rawQuery("SELECT id_pedido FROM  pedidos ORDER BY id_pedido DESC;", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM  pedidos ORDER BY id DESC;", null);
             listaPedidos = findViewById(R.id.listaId);
-            int indiceTarefaId = cursor.getColumnIndex("id_pedido");
+            int indicePedido = cursor.getColumnIndex("id");
+            int valorItem = cursor.getColumnIndex("valor");
 
             itens = new ArrayList<String>();
+            cursor.moveToFirst();
 
-            Toast.makeText(this, "Linhas: " + cursor.getCount(),Toast.LENGTH_LONG);
+            Log.i("info", ":Quantidade de itens"+cursor.getCount());
             if(cursor.getCount() != 0){
-                while (cursor != null){
-                    Log.i("Resultado - ","NumeroPedido: " + cursor.getString(indiceTarefaId));
-                    itens.add("Pedido n° "+cursor.getString(indiceTarefaId)+" - R$"+"00,00");
+                for(int i = 0; i < cursor.getCount(); i++){
+                    Log.i("Info - ","NumeroPedido: " + cursor.getString(indicePedido));
+                    itens.add("Pedido n° "+cursor.getString(indicePedido)+" - R$"+cursor.getString(valorItem));
                     cursor.moveToNext();
                 }
 
             }else{
-                Log.i("Resultado", "Nenhum dado encontrado");
+                Log.i("Info", "Nenhum dado encontrado");
             }
-            itens.add("Pedido n° 1 - R$00,00");
+            //itens.add("Pedido n° 1 - R$00,00");
             itensAdaptador = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, android.R.id.text1, itens);
             listaPedidos.setAdapter(itensAdaptador);
 
         } catch (Exception e){
             e.getStackTrace();
-            Log.i("Erro Adapter", e.getMessage());
+            Log.i("Erro:", e.getMessage());
         }
     }
 
-    private void inserePedido(){
-        try{
-            db = openOrCreateDatabase("CodigoDoSabor", MODE_PRIVATE,null);
-            String sql = "INSERT INTO pedidos (fk_cliente, fk_item, quantidade) VALUES(1,1,1);";
-
-            db.execSQL(sql);
-
-            Toast.makeText(getApplicationContext(), "Pedido Inserido", Toast.LENGTH_LONG).show();
-            getPedidos();
-        } catch (Exception e){
-            Log.i("Erro", e.getMessage());
-        }
-
-
-    }
 
 }

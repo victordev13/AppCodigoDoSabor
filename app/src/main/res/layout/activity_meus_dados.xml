@@ -9,7 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@color/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,5 +18,116 @@
         app:subtitleTextColor="#FFFFFF"
         app:theme="@style/ToolbarColoredBackArrow"
         app:titleTextColor="#FFFFFF" />
+
+    <ScrollView
+        android:layout_width="413dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="136dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="42dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="188dp"
+                android:text="Seus dados:"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/nome"
+                android:layout_width="286dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="42dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="83dp"
+                android:ems="10"
+                android:hint="Nome"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editText2"
+                android:layout_width="286dp"
+                android:layout_height="41dp"
+                android:layout_marginStart="42dp"
+                android:layout_marginLeft="42dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="83dp"
+                android:layout_marginRight="83dp"
+                android:ems="10"
+                android:hint="Email"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editText3a"
+                android:layout_width="288dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="42dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="83dp"
+                android:ems="10"
+                android:hint="Senha"
+                android:inputType="textPersonName" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="42dp"
+                android:layout_marginTop="42dp"
+                android:layout_marginEnd="258dp"
+                android:text="Endereço:"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/endereco"
+                android:layout_width="287dp"
+                android:layout_height="49dp"
+                android:layout_marginStart="42dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="83dp"
+                android:ems="10"
+                android:hint="Rua x, n° 0"
+                android:inputType="textPersonName" />
+
+            <EditText
+                android:id="@+id/editText5rro"
+                android:layout_width="284dp"
+                android:layout_height="52dp"
+                android:layout_marginStart="42dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="83dp"
+                android:ems="10"
+                android:hint="Bairro"
+                android:inputType="textPersonName" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="66dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="51dp"
+                android:background="#FF801A05"
+                android:text="Salvar"
+                android:textColor="@android:color/background_light"
+                android:textSize="24sp" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
